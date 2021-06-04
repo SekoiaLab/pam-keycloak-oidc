@@ -13,19 +13,19 @@ PLATFORMS=darwin linux windows
 ARCHITECTURES=amd64
 
 # Setup linker flags option for build that inter-operate with variable names in src code
-LDFLAGS=-ldflags "-X main.Version=${VERSION} -X main.Build=${BUILD}"
+LDFLAGS=-ldflags "-X main.Version=${VERSION} -X main.Build=${BUILD} -s -w -extldflags \"-static\""
 
 all: clean build_all
 
 .PHONY: build
 build: ## Build the binary for the local architecture
-	go build ${LDFLAGS} -o ${BINARY}
+	CGO_ENABLED=0 go build ${LDFLAGS} -o ${BINARY}
 
 .PHONY: build_all
 build_all: ## Build the binary for all architectures
 	$(foreach GOOS, $(PLATFORMS),\
 	$(foreach GOARCH, $(ARCHITECTURES),\
-	$(shell export GOOS=$(GOOS); export GOARCH=$(GOARCH); [[ $(GOOS) == "windows" ]] && export EXT=".exe"; go build -v -o $(BINARY).$(GOOS)-$(GOARCH)$${EXT})))
+	$(shell export GOOS=$(GOOS); export GOARCH=$(GOARCH); [[ $(GOOS) == "windows" ]] && export EXT=".exe"; CGO_ENABLED=0 go build -v -o $(BINARY).$(GOOS)-$(GOARCH)$${EXT})))
 	$(info All compiled!)
 
 # Remove only what we've created
