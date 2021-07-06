@@ -3,7 +3,6 @@ package main
 
 import (
 	"context"
-	"crypto/tls"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -12,23 +11,11 @@ import (
 	"mime"
 	"net/http"
 	"net/url"
-	"os"
 	"strings"
 
 	"golang.org/x/net/context/ctxhttp"
 	"golang.org/x/oauth2"
 )
-
-func init() {
-	if os.Getenv("INSECURE_MODE") == "true" {
-		cfg := &tls.Config{
-			InsecureSkipVerify: true,
-		}
-		http.DefaultClient.Transport = &http.Transport{
-			TLSClientConfig: cfg,
-		}
-	}
-}
 
 // tokenJSON is the struct representing the HTTP response from OAuth2
 // providers returning a token in JSON form.
