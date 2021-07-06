@@ -85,6 +85,8 @@ system is not amd64, compile this golang application for the appropriate archite
     access-token-signing-method="RS256"
     # a key for XOR masking. treat it as a top secret
     xor-key="scmi" 
+    # disable ssl certificates verification
+    insecure-mode=false
     ```
 
 8.  Local "test":
